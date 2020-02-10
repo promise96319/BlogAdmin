@@ -105,17 +105,31 @@ export default {
               component: './Welcome',
             },
             {
-              path: '/admin',
-              name: 'admin',
-              icon: 'crown',
-              component: './Admin',
-              authority: ['admin'],
+              path: '/article',
+              name: 'article.manager',
+              icon: 'table',
+              children: [
+                {
+                  path: '/article/add/',
+                  name: 'add',
+                  icon: 'folder-add',
+                },
+                {
+                  path: '/article/list/',
+                  name: 'list',
+                  icon: 'folder-open',
+                },
+              ],
             },
             {
-              name: 'list.table-list',
-              icon: 'table',
-              path: '/list',
-              component: './ListTableList',
+              hideInMenu: true,
+              path: '/article/list/',
+              component: './article/ArticleList',
+            },
+            {
+              hideInMenu: true,
+              path: '/article/add/',
+              component: './article/ArticleAdd',
             },
             {
               component: './404',
