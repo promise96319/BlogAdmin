@@ -52,4 +52,8 @@ export default {
   'menu.article.manager': '文章管理',
   'menu.article.manager.add': '添加文章',
   'menu.article.manager.list': '文章列表',
+  'menu.article.manager.category': '文章分类',
+  'menu.article.manager.tag': '文章标签',
+
+  'menu.carousel': '轮播图',
 };

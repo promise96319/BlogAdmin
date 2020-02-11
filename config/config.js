@@ -118,18 +118,44 @@ export default {
                   path: '/article/list/',
                   name: 'list',
                   icon: 'folder-open',
+                }, 
+                {
+                  path: '/article/category/',
+                  name: 'category',
+                  icon: 'hdd',
+                },
+                {
+                  path: '/article/tags/',
+                  name: 'tag',
+                  icon: 'hdd',
                 },
               ],
             },
             {
               hideInMenu: true,
-              path: '/article/list/',
-              component: './article/ArticleList',
+              path: '/article/add/',
+              component: './article/ArticleAdd',
             },
             {
               hideInMenu: true,
-              path: '/article/add/',
-              component: './article/ArticleAdd',
+              path: '/article/list/',
+              component: './article/ArticleList',
+            }, 
+            {
+              hideInMenu: true,
+              path: '/article/category/',
+              component: './article/ArticleCategory',
+            },
+            {
+              hideInMenu: true,
+              path: '/article/tags/',
+              component: './article/ArticleTags',
+            },
+            {
+              name: 'carousel',
+              icon: 'picture',
+              path: '/carousel',
+              component: './home/HomeCarousel',
             },
             {
               component: './404',

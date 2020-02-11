@@ -12,7 +12,7 @@ const { TextArea } = Input;
 
 class FormLayoutDemo extends React.Component {
   state = {
-    isArticleEditorVisible: true,
+    isArticleEditorVisible: false,
     content: '',
     contentHtml: '',
   };
@@ -106,36 +106,22 @@ class FormLayoutDemo extends React.Component {
             </Button>
           </Form.Item>
           <Form.Item {...buttonItemLayout}>
-            <Row gutter={16}>
-              <Col>
-                <Button type="primary" size="large">
-                  暂存
-                </Button>
-              </Col>
-              <Col>
-                <Button type="primary" size="large">
-                  发布
-                </Button>
-              </Col>
-            </Row>
+            <Button type="primary" size="large">
+              发布
+            </Button>
           </Form.Item>
         </Form>
 
         {isArticleEditorVisible ? (
           <div className={styles.editor}>
-            <Row gutter={20}>
+            <Row type="flex" justify="space-between">
               <Col>
-                <Button type="primary" onClick={this.toggleArticleEditor}>
+                <Button type="default" onClick={this.toggleArticleEditor}>
                   {/* <Icon type="left"></Icon> */}
                   返回
                 </Button>
               </Col>
-              <Col>
-                <Button type="primary" onClick={this.toggleArticleEditor}>
-                  {/* <Icon type="file-add"></Icon> */}
-                  暂存
-                </Button>
-              </Col>
+              <Col>文章内容</Col>
               <Col>
                 <Button type="primary" onClick={this.toggleArticleEditor}>
                   {/* <Icon type="cloud"></Icon> */}
