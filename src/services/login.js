@@ -1,4 +1,15 @@
 import request from '@/utils/request';
+
+const HOST = 'http://localhost:7001';
+
+export async function login(params) {
+  return request(HOST + '/api/admin/login', {
+    method: 'POST',
+    data: params,
+  });
+}
+
+// 注释
 export async function fakeAccountLogin(params) {
   return request('/api/login/account', {
     method: 'POST',
