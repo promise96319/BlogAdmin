@@ -96,13 +96,13 @@ export default {
           routes: [
             {
               path: '/',
-              redirect: '/welcome',
+              redirect: '/carousel',
             },
             {
-              path: '/welcome',
-              name: 'welcome',
-              icon: 'smile',
-              component: './Welcome',
+              name: 'carousel',
+              icon: 'picture',
+              path: '/carousel',
+              component: './home/HomeCarousel',
             },
             {
               path: '/article',
@@ -127,9 +127,14 @@ export default {
                 {
                   path: '/article/tags/',
                   name: 'tag',
-                  icon: 'hdd',
+                  icon: 'tag',
                 },
               ],
+            },
+            {
+              hideInMenu: true,
+              path: '/article/update/:id',
+              component: './article/ArticleAdd',
             },
             {
               hideInMenu: true,
@@ -150,12 +155,6 @@ export default {
               hideInMenu: true,
               path: '/article/tags/',
               component: './article/ArticleTags',
-            },
-            {
-              name: 'carousel',
-              icon: 'picture',
-              path: '/carousel',
-              component: './home/HomeCarousel',
             },
             {
               component: './404',

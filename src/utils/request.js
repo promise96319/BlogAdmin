@@ -1,3 +1,5 @@
+import { logout } from '@/services/login';
+import { authHeader } from '@/services/config';
 /**
  * request 网络请求工具
  * 更详细的 api 文档: https://github.com/umijs/umi-request
@@ -29,6 +31,12 @@ const errorHandler = error => {
   const { response } = error;
 
   if (response && response.status) {
+    // 未授权
+    if (response.status === 401) {
+      logout();
+      return;
+    }
+
     const errorText = codeMessage[response.status] || response.statusText;
     const { status, url } = response;
     notification.error({
@@ -48,9 +56,24 @@ const errorHandler = error => {
  * 配置request请求时的默认参数
  */
 
-const request = extend({
+const requestUtil = extend({
   errorHandler,
   // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });
+
+/**
+ * 
+ * @param {请求地址} url 
+ * @param {请求参数} params 
+ * @param {是否需要授权，默认为true} isAuth 
+ */
+const request = (url, params, isAuth = true) => {
+  if (!isAuth) {
+    return requestUtil(url, params);
+  } else {
+    return requestUtil(url, { ...params, ...authHeader() });
+  }
+};
+
 export default request;

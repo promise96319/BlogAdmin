@@ -1,36 +1,99 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Table, Tag, Input, Select } from 'antd';
+import { Row, Col, Table, Tag, Input, Select, Button} from 'antd';
 import styles from './index.less';
+import { getArticleList } from '@/services/article';
+import { getCategoryList } from '@/services/category';
+import { getTagList } from '@/services/tag';
+import router from 'umi/router'
 
-const { Search } = Input
-const { Option } = Select
+const { Search } = Input;
+const { Option } = Select;
 
 export default () => {
-  const [loading, setLoading] = useState(true);
+  const [articleList, setArticleList] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+  const [tagList, setTagList] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(-1)
+  const [selectedTag, setSelectedTag] = useState(-1)
+
+  const getArticleData = async (params) => {
+    const result = await getArticleList(params);
+
+    if (!result) { return }
+
+    const articleList = result.map((item, index) => {
+      item.key = index;
+      return item;
+    });
+    setArticleList(articleList);
+  };
+
+  const getCategoryData = async () => {
+    const result = await getCategoryList();
+
+    if (!result) { return }
+    setCategoryList(result);
+  };
+
+  const getTagData = async () => {
+    const result = await getTagList();
+
+    if (!result) { return }
+    setTagList(result);
+  };
+
+  useEffect(() => {
+    getArticleData();
+    getCategoryData();
+    getTagData();
+  }, []);
+
+  const handleCategoryChange = e => {
+    if (e === selectedCategory) { return }
+    setSelectedCategory(e)
+    setSelectedTag(-1)
+    
+    if (e === -1) {
+      getArticleData()
+    } else {
+      getArticleData({ categoryID: e })
+    }
+  }
+
+  const handleTagChange = e => {
+    if (e === selectedTag) { return }
+    setSelectedTag(e)
+    setSelectedCategory(-1)
+
+    if (e === -1) {
+      getArticleData()
+    } else {
+      getArticleData({ tagID: e })
+    }
+  }
 
   const columns = [
     {
-      title: '文章ID',
-      dataIndex: 'name',
-      key: 'name',
-      render: text => <a>{text}</a>,
+      title: '发布时间',
+      dataIndex: 'add_time',
+      key: 'add_time',
+      render: text => new Date(text).toLocaleDateString(),
     },
     {
       title: '文章标题',
-      dataIndex: 'name',
-      key: 'name',
-      render: text => <a>{text}</a>,
+      dataIndex: 'title',
+      key: 'title',
     },
     {
       title: '文章类别',
-      dataIndex: 'age',
-      key: 'age',
+      dataIndex: 'category_name',
+      key: 'category_name',
     },
     {
       title: '文章作者',
-      dataIndex: 'address',
-      key: 'address',
+      dataIndex: 'author_name',
+      key: 'author_name',
     },
     {
       title: '文章标签',
@@ -40,11 +103,11 @@ export default () => {
         <span>
           {tags.map(tag => {
             let color = tag.length > 5 ? 'geekblue' : 'green';
-  
+
             if (tag === 'loser') {
               color = 'volcano';
             }
-  
+
             return (
               <Tag color={color} key={tag}>
                 {tag.toUpperCase()}
@@ -57,77 +120,45 @@ export default () => {
     {
       title: '操作',
       key: 'action',
-      render: (text, record) => (
-        <span>
-          <a>查看详情</a>
-        </span>
+      render: (item) => (
+        <Button type="primary" onClick={() => {
+          router.push(`/article/update/${item.id}`)
+        }}>编辑</Button>
       ),
     },
   ];
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      age: 32,
-      address: 'New York No. 1 Lake Park',
-      tags: ['nice', 'developer'],
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      age: 42,
-      address: 'London No. 1 Lake Park',
-      tags: ['loser'],
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      age: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
-    },
-  ];
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-  }, []);
-
-  const handleChange = (e) => {
-
-  }
 
   return (
     <PageHeaderWrapper content="展示所有的文章信息" className={styles.main}>
       <Row type="flex" justify="start" gutter={20}>
-        <Col span={10}>
+        {/* <Col span={10}>
           <Search
             placeholder="input search text"
             onSearch={value => console.log(value)}
             enterButton
           />
+        </Col> */}
+        <Col>
+          文章类别
+          <Select className={styles.select} defaultValue={selectedCategory} onChange={handleCategoryChange}>
+            <Option value={-1} key="-1">所有分类</Option>
+            {categoryList.map((item, index) => {
+              return <Option value={item.id} key={index}>{item.category_name}</Option>;
+            })}
+          </Select>
         </Col>
-        <Col span={10}>
-        <Select
-          className={styles.select}
-          defaultValue="lucy"
-          onChange={handleChange}
-        >
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="Yiminghe">yiminghe</Option>
-        </Select>
-        <Select
-          className={styles.select}
-          defaultValue="lucy"
-        >
-          <Option value="lucy">Lucy</Option>
-        </Select>
+        <Col>
+          文章标签
+          <Select className={styles.select} defaultValue={selectedTag} onChange={handleTagChange}>
+            <Option value={-1} key="-1">所有标签</Option>
+            {tagList.map((item, index) => {
+              return <Option value={item.id} key={index}>{item.tag_name}</Option>;
+            })}
+          </Select>
         </Col>
       </Row>
 
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={articleList} />
     </PageHeaderWrapper>
   );
 };

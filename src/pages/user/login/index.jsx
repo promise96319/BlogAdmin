@@ -12,12 +12,16 @@ const Login = props => {
 
   const handleSubmit = async () => {
     const res = await login({ username, password });
-    console.log('res', res);
+    
+    if (res.status && res.status != 200) { return }
+
     if (res.loginSuccess) {
+      localStorage.setItem("token", res.token)
+      
       const urlParams = new URL(window.location.href);
       const params = getPageQuery();
       let { redirect } = params;
-
+      
       if (redirect) {
         const redirectUrlParams = new URL(redirect);
 
@@ -32,7 +36,6 @@ const Login = props => {
           return;
         }
       }
-
       router.replace(redirect || '/');
     } else {
       message.error('用户名密码错误');
