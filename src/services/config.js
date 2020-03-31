@@ -2,7 +2,10 @@ import { stringify } from 'querystring';
 import { router } from 'umi';
 import { getPageQuery } from '@/utils/utils';
 
-export const HOST = "http://localhost:7001"
+export const HOST = 'http://www.qinguanghui.com'
+// export const HOST = ''
+// export const HOST = 'http://localhost:7001'
+
 
 /**
  * 检查是否具有权限

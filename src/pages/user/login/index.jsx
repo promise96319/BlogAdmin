@@ -12,9 +12,8 @@ const Login = props => {
 
   const handleSubmit = async () => {
     const res = await login({ username, password });
+    if (!res) { return }
     
-    if (res.status && res.status != 200) { return }
-
     if (res.loginSuccess) {
       localStorage.setItem("token", res.token)
       
@@ -26,8 +25,9 @@ const Login = props => {
         const redirectUrlParams = new URL(redirect);
 
         if (redirectUrlParams.origin === urlParams.origin) {
+          
           redirect = redirect.substr(urlParams.origin.length);
-
+          
           if (redirect.match(/^\/.*#/)) {
             redirect = redirect.substr(redirect.indexOf('#') + 1);
           }
@@ -36,6 +36,7 @@ const Login = props => {
           return;
         }
       }
+      
       router.replace(redirect || '/');
     } else {
       message.error('用户名密码错误');

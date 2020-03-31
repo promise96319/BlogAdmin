@@ -1,5 +1,6 @@
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import React, { useState, useEffect } from 'react';
+import router from 'umi/router'
 import { Row, Col, Form, Input, Button, Radio, Select, Modal, Icon, message } from 'antd';
 import styles from './index.less';
 import marked from 'marked';
@@ -139,10 +140,19 @@ export default props => {
     }
 
     if (result.addSuccess) {
+      setTitle('')
+      setDescription('')
+      setAuthorName('')
+      setImageSrc('')
+      setCategoryName(-1)
+      setTagName([])
+      setContent('')
+      setArticleEditorVisible(false)
       message.success('添加成功')
     }
 
     if (result.updateSuccess) {
+      router.push('/article/list')
       message.success('更新成功')
     }
   };

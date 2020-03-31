@@ -10,32 +10,32 @@ import { Link } from 'umi';
 import { connect } from 'dva';
 import { GithubOutlined } from '@ant-design/icons';
 import { Result, Button } from 'antd';
-import Authorized from '@/utils/Authorized';
+// import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
 
-const noMatch = (
-  <Result
-    status="403"
-    title="403"
-    subTitle="Sorry, you are not authorized to access this page."
-    extra={
-      <Button type="primary">
-        <Link to="/user/login">Go Login</Link>
-      </Button>
-    }
-  />
-);
+// const noMatch = (
+//   <Result
+//     status="403"
+//     title="403"
+//     subTitle="Sorry, you are not authorized to access this page."
+//     extra={
+//       <Button type="primary">
+//         <Link to="/user/login">Go Login</Link>
+//       </Button>
+//     }
+//   />
+// );
 
 /**
  * use Authorized check all menu item
  */
-const menuDataRender = menuList =>
-  menuList.map(item => {
-    const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
-    return Authorized.check(item.authority, localItem, null);
-  });
+// const menuDataRender = menuList =>
+//   menuList.map(item => {
+//     const localItem = { ...item, children: item.children ? menuDataRender(item.children) : [] };
+//     return Authorized.check(item.authority, localItem, null);
+//   });
 
 const defaultFooterDom = (
   <DefaultFooter
@@ -103,11 +103,6 @@ const BasicLayout = props => {
    */
 
   useEffect(() => {
-    if (dispatch) {
-      dispatch({
-        type: 'user/fetchCurrent',
-      });
-    }
   }, []);
   /**
    * init variables
@@ -122,9 +117,9 @@ const BasicLayout = props => {
     }
   }; // get children authority
 
-  const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
-    authority: undefined,
-  };
+  // const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
+  //   authority: undefined,
+  // };
   return (
     <ProLayout
       logo={logo}
@@ -159,14 +154,14 @@ const BasicLayout = props => {
         );
       }}
       footerRender={footerRender}
-      menuDataRender={menuDataRender}
+      // menuDataRender={menuDataRender}
       rightContentRender={() => <RightContent />}
       {...props}
       {...settings}
     >
-      <Authorized authority={authorized.authority} noMatch={noMatch}>
+      {/* <Authorized authority={authorized.authority} noMatch={noMatch}>
         {children}
-      </Authorized>
+      </Authorized> */}
     </ProLayout>
   );
 };

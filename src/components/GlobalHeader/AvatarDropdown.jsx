@@ -5,19 +5,21 @@ import { connect } from 'dva';
 import { router } from 'umi';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
+import { logout } from '@/services/login'
 
 class AvatarDropdown extends React.Component {
   onMenuClick = event => {
     const { key } = event;
 
     if (key === 'logout') {
-      const { dispatch } = this.props;
+      // const { dispatch } = this.props;
 
-      if (dispatch) {
-        dispatch({
-          type: 'login/logout',
-        });
-      }
+      // if (dispatch) {
+      //   dispatch({
+      //     type: 'login/logout',
+      //   });
+      // }
+      logout()
 
       return;
     }
@@ -28,8 +30,8 @@ class AvatarDropdown extends React.Component {
   render() {
     const {
       currentUser = {
-        avatar: '',
-        name: '',
+        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        name: 'qinguanghui',
       },
       menu,
     } = this.props;
@@ -74,6 +76,7 @@ class AvatarDropdown extends React.Component {
   }
 }
 
-export default connect(({ user }) => ({
-  currentUser: user.currentUser,
-}))(AvatarDropdown);
+// export default connect(({ user }) => ({
+//   currentUser: user.currentUser,
+// }))(AvatarDropdown);
+export default AvatarDropdown
